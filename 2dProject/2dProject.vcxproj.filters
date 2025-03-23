@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Dot.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Walls.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="Init.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="LTexture.cpp">
+      <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Dot.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Walls.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="Init.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="LTexture.h">
+      <Filter>Source Files\scenes</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="38_particle_engines\blue.bmp">
+      <Filter>Resources\images</Filter>
+    </Image>
+    <Image Include="38_particle_engines\dot.bmp">
+      <Filter>Resources\images</Filter>
+    </Image>
+    <Image Include="38_particle_engines\green.bmp">
+      <Filter>Resources\images</Filter>
+    </Image>
+    <Image Include="38_particle_engines\red.bmp">
+      <Filter>Resources\images</Filter>
+    </Image>
+    <Image Include="38_particle_engines\shimmer.bmp">
+      <Filter>Resources\images</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{f563db40-e431-48f3-b813-5230a65be269}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core">
+      <UniqueIdentifier>{9f40d862-7a44-4960-9ff2-199068b4a14e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entities">
+      <UniqueIdentifier>{c240e502-434d-4050-96ad-6be9f9a55f45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scenes">
+      <UniqueIdentifier>{6ed556ae-c93f-4196-b6eb-38db4cf3ea9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{f17fd4d2-6ab8-4434-a804-6839c42704ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{0a092ece-b05c-4349-a433-1b1d4b3fe20a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\font">
+      <UniqueIdentifier>{3d379753-b9d1-4021-bd9d-1506afb02dd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\images">
+      <UniqueIdentifier>{8e5c8c01-7818-46e9-a568-ea3dd21dccd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\sounds">
+      <UniqueIdentifier>{19657a71-baaa-41b6-ba6b-31ceeb3d2b00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\music">
+      <UniqueIdentifier>{c18704ca-4572-488e-9750-adc856886850}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="16_true_type_fonts\lazy.ttf">
+      <Filter>Resources\font</Filter>
+    </Font>
+  </ItemGroup>
+</Project>
