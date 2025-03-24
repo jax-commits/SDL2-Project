@@ -11,6 +11,7 @@ void Game::run()
     Dot dot(0, 0);
     Dot otherDot( SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4);
     Walls walls;
+    Tetromino currentTetromino(TetrominoType::I, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4);
 
     while (!quit)
     {
@@ -22,20 +23,25 @@ void Game::run()
             }
 
             dot.handleEvent(e);
+            currentTetromino.handleEvent(e);
         }
 
         //Move Dot & check collision
         dot.move(otherDot.getColliders(), walls.getWalls());
+        currentTetromino.update();
 
         //Clear Screen
         SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(gRenderer);
 
-        //Render walls
-        walls.render(gRenderer);
+        //Render Walls
+        //walls.render(gRenderer);
+
+        //Render Tetris Shapes
+        currentTetromino.render(gRenderer);
 
         //Render Dots
-        dot.render();
+        //dot.render();
         otherDot.render();
 
         //Update

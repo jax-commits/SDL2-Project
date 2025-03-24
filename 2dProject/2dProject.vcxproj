@@ -25,6 +25,7 @@
     <ClCompile Include="LTexture.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="Tetromino.cpp" />
     <ClCompile Include="Walls.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -34,6 +35,7 @@
     <ClInclude Include="Init.h" />
     <ClInclude Include="LTexture.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="Tetromino.h" />
     <ClInclude Include="Walls.h" />
   </ItemGroup>
   <ItemGroup>

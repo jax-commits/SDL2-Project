@@ -4,6 +4,7 @@
 
 #include "Dot.h"
 #include "Walls.h"
+#include "Tetromino.h"
 
 class Game
 {
