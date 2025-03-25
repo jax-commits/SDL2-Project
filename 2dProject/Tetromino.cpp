@@ -1,7 +1,7 @@
 #include "Tetromino.h"
 
 Tetromino::Tetromino(TetrominoType type, int startX, int startY)
-    : type(type), x(startX), y(startY), lastFallTime(0), fallSpeed(1) {
+    : type(type), x(startX), y(startY), lastFallTime(0), fallSpeed(1), hasLanded(false) {
     setShape();
 }
 
@@ -38,27 +38,58 @@ void Tetromino::setShape() {
     }
 }
 
-void Tetromino::move(int dx) {
-    x += dx;
-}
-
 void Tetromino::update() {
     Uint32 currentTime = SDL_GetTicks();
     if (currentTime - lastFallTime > 500) { // Adjust fall speed (500ms per fall)
-        y += fallSpeed;
+        if ((y + shape.size()) * 30 < SCREEN_HEIGHT) { 
+            y += fallSpeed;
+        }
+        else {
+            hasLanded = true; // Mark as landed when it reaches the bottom
+        }
         lastFallTime = currentTime;
     }
 }
 
 void Tetromino::rotate() {
-    int size = shape.size();
-    std::vector<std::vector<int>> rotated(size, std::vector<int>(size, 0));
+    int rows = shape.size();
+    int cols = shape[0].size();
+    std::vector<std::vector<int>> rotated(cols, std::vector<int>(rows));
 
-    for (int i = 0; i < size; ++i)
-        for (int j = 0; j < size; ++j)
-            rotated[j][size - 1 - i] = shape[i][j];
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            rotated[j][rows - 1 - i] = shape[i][j];
+        }
+    }
 
     shape = rotated;
+
+    if (isOutOfBounds()) {
+        rotateBack(); // Revert rotation if out of bounds
+    }
+}
+
+bool Tetromino::isOutOfBounds() {
+    int blockSize = 30;
+    for (int i = 0; i < shape.size(); ++i) {
+        for (int j = 0; j < shape[i].size(); ++j) {
+            if (shape[i][j] == 1) {
+                int newX = (x + j) * blockSize;
+                int newY = (y + i) * blockSize;
+                if (newX < 0 || newX >= SCREEN_WIDTH || newY >= SCREEN_HEIGHT) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+void Tetromino::rotateBack() {
+    // Rotate three more times to revert the original rotation
+    for (int i = 0; i < 3; i++) {
+        rotate();
+    }
 }
 
 void Tetromino::handleEvent(SDL_Event& e)
@@ -68,10 +99,10 @@ void Tetromino::handleEvent(SDL_Event& e)
         switch (e.key.keysym.sym)
         {
         case SDLK_a:
-            x -= 1; // Move left
+            if (x > 0) x -= 1; // Move left with boundary check
             break;
         case SDLK_d:
-            x += 1; // Move right
+            if ((x + shape[0].size()) * 30 < SCREEN_WIDTH) x += 1; // Move right with boundary check
             break;
         case SDLK_r:
             rotate(); // Rotate piece
@@ -80,10 +111,13 @@ void Tetromino::handleEvent(SDL_Event& e)
     }
 }
 
-void Tetromino::render(SDL_Renderer* gRenderer) {
-    int blockSize = 50;
+
+void Tetromino::render(SDL_Renderer* gRenderer) const{
+    int blockSize = 30;
     SDL_Rect block;
 
+    block.x = 0;
+    block.y = 0;
     block.w = block.h = blockSize;
     SDL_SetRenderDrawColor(gRenderer, color.r, color.g, color.b, color.a);
 
@@ -98,18 +132,6 @@ void Tetromino::render(SDL_Renderer* gRenderer) {
     }
 }
 
-std::vector<SDL_Rect> Tetromino::getBlocks() const {
-    std::vector<SDL_Rect> blocks;
-    int blockSize = 30;
-
-    for (int i = 0; i < shape.size(); ++i) {
-        for (int j = 0; j < shape[i].size(); ++j) {
-            if (shape[i][j]) {
-                SDL_Rect rect = { (x + j) * blockSize, (y + i) * blockSize, blockSize, blockSize };
-                blocks.push_back(rect);
-            }
-        }
-    }
-
-    return blocks;
+bool Tetromino::isLanded() const {
+    return hasLanded;
 }

@@ -7,11 +7,8 @@ void Game::run()
     bool quit = false;
     SDL_Event e;
 
-    //Scene Objects
-    Dot dot(0, 0);
-    Dot otherDot( SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4);
-    Walls walls;
-    Tetromino currentTetromino(TetrominoType::I, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4);
+    std::vector<Tetromino> landedTetrominoes;
+    Tetromino currentTetromino(static_cast<TetrominoType>(rand() % 7), 0, 0);
 
     while (!quit)
     {
@@ -22,27 +19,32 @@ void Game::run()
                 quit = true;
             }
 
-            dot.handleEvent(e);
-            currentTetromino.handleEvent(e);
+            if (!currentTetromino.isLanded()) {
+                currentTetromino.handleEvent(e);
+            }
         }
 
-        //Move Dot & check collision
-        dot.move(otherDot.getColliders(), walls.getWalls());
-        currentTetromino.update();
+        if (!currentTetromino.isLanded()) {
+            currentTetromino.update();
+        }
+        else {
+            // Store the landed tetromino
+            landedTetrominoes.push_back(currentTetromino);
+            // Spawn new Tetromino
+            currentTetromino = Tetromino(static_cast<TetrominoType>(rand() % 7), 0, 0);
+        }
 
         //Clear Screen
         SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(gRenderer);
 
-        //Render Walls
-        //walls.render(gRenderer);
+        // Render landed Tetrominoes
+        for (const auto& tetromino : landedTetrominoes) {
+            tetromino.render(gRenderer);
+        }
 
         //Render Tetris Shapes
         currentTetromino.render(gRenderer);
-
-        //Render Dots
-        //dot.render();
-        otherDot.render();
 
         //Update
         SDL_RenderPresent(gRenderer);
