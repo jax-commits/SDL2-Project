@@ -38,11 +38,19 @@ void Tetromino::setShape() {
     }
 }
 
-void Tetromino::update() {
+void Tetromino::update(const std::vector<Tetromino>& landedTetrominoes) {
     Uint32 currentTime = SDL_GetTicks();
     if (currentTime - lastFallTime > 500) { // Adjust fall speed (500ms per fall)
-        if ((y + shape.size()) * 30 < SCREEN_HEIGHT) { 
+        if ((y + shape.size()) * BLOCK_SIZE < SCREEN_HEIGHT) { 
             y += fallSpeed;
+
+            for (const auto& landed : landedTetrominoes) {
+                if (collidesWith(landed)) {
+                    y -= fallSpeed;
+                    hasLanded = true;
+                    break;
+                }
+            }
         }
         else {
             hasLanded = true; // Mark as landed when it reaches the bottom
@@ -70,7 +78,7 @@ void Tetromino::rotate() {
 }
 
 bool Tetromino::isOutOfBounds() {
-    int blockSize = 30;
+    int blockSize = BLOCK_SIZE;
     for (int i = 0; i < shape.size(); ++i) {
         for (int j = 0; j < shape[i].size(); ++j) {
             if (shape[i][j] == 1) {
@@ -92,20 +100,44 @@ void Tetromino::rotateBack() {
     }
 }
 
-void Tetromino::handleEvent(SDL_Event& e)
+void Tetromino::handleEvent(SDL_Event& e, const std::vector<Tetromino>& landedTetrominoes)
 {
-    if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+    if (e.type == SDL_KEYDOWN)
     {
         switch (e.key.keysym.sym)
         {
         case SDLK_a:
-            if (x > 0) x -= 1; // Move left with boundary check
+            if (x > 0) {
+                Tetromino temp = *this;
+                temp.x -= 1; // Move left with boundary check
+                if (!temp.isOutOfBounds() && !temp.collidesWithAny(landedTetrominoes)) {
+                    x -= 1;
+                }
+            }
             break;
         case SDLK_d:
-            if ((x + shape[0].size()) * 30 < SCREEN_WIDTH) x += 1; // Move right with boundary check
+            if ((x + shape[0].size()) * BLOCK_SIZE < SCREEN_WIDTH) {
+                Tetromino temp = *this;
+                temp.x += 1; // Move left with boundary check
+                if (!temp.isOutOfBounds() && !temp.collidesWithAny(landedTetrominoes)) {
+                    x += 1;
+                }
+            } // Move right with boundary check
             break;
-        case SDLK_r:
+        case SDLK_s:
+            if ((y + shape[0].size()) * BLOCK_SIZE < SCREEN_HEIGHT) {
+                Tetromino temp = *this;
+                temp.y += 1; // Move left with boundary check
+                if (!temp.collidesWithAny(landedTetrominoes)) {
+                    y += 1;
+                }
+            }
+            break;
+        case SDLK_w:
             rotate(); // Rotate piece
+            if (isOutOfBounds() || collidesWithAny(landedTetrominoes)) {
+                rotateBack();
+            }
             break;
         }
     }
@@ -113,7 +145,7 @@ void Tetromino::handleEvent(SDL_Event& e)
 
 
 void Tetromino::render(SDL_Renderer* gRenderer) const{
-    int blockSize = 30;
+    int blockSize = BLOCK_SIZE;
     SDL_Rect block;
 
     block.x = 0;
@@ -134,4 +166,41 @@ void Tetromino::render(SDL_Renderer* gRenderer) const{
 
 bool Tetromino::isLanded() const {
     return hasLanded;
+}
+
+bool Tetromino::collidesWith(const Tetromino& other) const {
+    int blockSize = BLOCK_SIZE;
+    for (int i = 0; i < shape.size(); ++i) {
+        for (int j = 0; j < shape[i].size(); ++j) {
+            if (shape[i][j] == 1) {
+                int thisX = x + j;
+                int thisY = y + i;
+                // Check if this Tetromino is out of bounds
+                if (thisX < 0 || thisX >= (SCREEN_WIDTH / blockSize) || thisY >= (SCREEN_HEIGHT / blockSize)) {
+                    return true; // Out of bounds
+                }
+                // Check for collision with the other Tetromino
+                for (int k = 0; k < other.shape.size(); ++k) {
+                    for (int l = 0; l < other.shape[k].size(); ++l) {
+                        if (other.shape[k][l] == 1) {
+                            int otherX = other.x + l;
+                            int otherY = other.y + k;
+                            if (thisX == otherX && thisY == otherY) {
+                                return true; // Collision detected
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
+bool Tetromino::collidesWithAny(const std::vector<Tetromino>& landedTetrominoes) const {
+    for (const auto& landed : landedTetrominoes) {
+        if (collidesWith(landed)) {
+            return true; // Collision detected
+        }
+    }
+    return false; // No collisions
 }

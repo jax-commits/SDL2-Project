@@ -1,13 +1,16 @@
 #include "Game.h"
 
+extern LWindow gWindow;
 extern SDL_Renderer* gRenderer;
 
 void Game::run()
 {
     bool quit = false;
     SDL_Event e;
-
+    //Vector of Tetrominoes that have landed on the Bottom Border or other Tetrominoes
     std::vector<Tetromino> landedTetrominoes;
+
+    //Spawns random Tetromino
     Tetromino currentTetromino(static_cast<TetrominoType>(rand() % 7), 0, 0);
 
     while (!quit)
@@ -19,15 +22,17 @@ void Game::run()
                 quit = true;
             }
 
+            gWindow.handleEvent(e);
+
             if (!currentTetromino.isLanded()) {
-                currentTetromino.handleEvent(e);
+                currentTetromino.handleEvent(e, landedTetrominoes);
             }
         }
 
         if (!currentTetromino.isLanded()) {
-            currentTetromino.update();
+            currentTetromino.update(landedTetrominoes);
         }
-        else {
+        else if (currentTetromino.isLanded()) {
             // Store the landed tetromino
             landedTetrominoes.push_back(currentTetromino);
             // Spawn new Tetromino

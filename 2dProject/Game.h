@@ -3,6 +3,8 @@
 #define GAME_H
 
 #include "Tetromino.h"
+#include "LWindow.h"
+#include "Globals.h"
 
 class Game
 {
