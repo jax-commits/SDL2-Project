@@ -10,6 +10,7 @@ class Game
 {
 public:
     void run();
+	void deleteFilledRows(std::vector<Tetromino>& landedTetrominoes);
 };
 
 #endif

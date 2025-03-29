@@ -38,6 +38,14 @@ void Tetromino::setShape() {
     }
 }
 
+const std::vector<std::vector<int>>& Tetromino::getShape() const {
+    return shape;
+}
+
+std::vector<std::vector<int>>& Tetromino::getShape() {
+    return shape;
+}
+
 void Tetromino::update(const std::vector<Tetromino>& landedTetrominoes) {
     Uint32 currentTime = SDL_GetTicks();
     if (currentTime - lastFallTime > 500) { // Adjust fall speed (500ms per fall)
@@ -75,22 +83,6 @@ void Tetromino::rotate() {
     if (isOutOfBounds()) {
         rotateBack(); // Revert rotation if out of bounds
     }
-}
-
-bool Tetromino::isOutOfBounds() {
-    int blockSize = BLOCK_SIZE;
-    for (int i = 0; i < shape.size(); ++i) {
-        for (int j = 0; j < shape[i].size(); ++j) {
-            if (shape[i][j] == 1) {
-                int newX = (x + j) * blockSize;
-                int newY = (y + i) * blockSize;
-                if (newX < 0 || newX >= SCREEN_WIDTH || newY >= SCREEN_HEIGHT) {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
 }
 
 void Tetromino::rotateBack() {
@@ -144,7 +136,7 @@ void Tetromino::handleEvent(SDL_Event& e, const std::vector<Tetromino>& landedTe
 }
 
 
-void Tetromino::render(SDL_Renderer* gRenderer) const{
+void Tetromino::render(SDL_Renderer* gRenderer) const {
     int blockSize = BLOCK_SIZE;
     SDL_Rect block;
 
@@ -156,8 +148,8 @@ void Tetromino::render(SDL_Renderer* gRenderer) const{
     for (int i = 0; i < shape.size(); ++i) {
         for (int j = 0; j < shape[i].size(); ++j) {
             if (shape[i][j] == 1) {
-                block.x = (x + j) * blockSize;
-                block.y = (y + i) * blockSize;
+                block.x = OFFSET_X + (x + j) * blockSize;
+                block.y = OFFSET_Y + (y + i) * blockSize;
                 SDL_RenderFillRect(gRenderer, &block);
             }
         }
@@ -168,6 +160,22 @@ bool Tetromino::isLanded() const {
     return hasLanded;
 }
 
+bool Tetromino::isOutOfBounds() {
+    int blockSize = BLOCK_SIZE;
+    for (int i = 0; i < shape.size(); ++i) {
+        for (int j = 0; j < shape[i].size(); ++j) {
+            if (shape[i][j] == 1) {
+                int newX = OFFSET_X + (x + j) * blockSize;
+                int newY = OFFSET_Y + (y + i) * blockSize;
+                if (newX < OFFSET_X || newX >= OFFSET_X + SCREEN_WIDTH || newY >= OFFSET_Y + SCREEN_HEIGHT) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
 bool Tetromino::collidesWith(const Tetromino& other) const {
     int blockSize = BLOCK_SIZE;
     for (int i = 0; i < shape.size(); ++i) {
@@ -175,18 +183,16 @@ bool Tetromino::collidesWith(const Tetromino& other) const {
             if (shape[i][j] == 1) {
                 int thisX = x + j;
                 int thisY = y + i;
-                // Check if this Tetromino is out of bounds
                 if (thisX < 0 || thisX >= (SCREEN_WIDTH / blockSize) || thisY >= (SCREEN_HEIGHT / blockSize)) {
-                    return true; // Out of bounds
+                    return true;
                 }
-                // Check for collision with the other Tetromino
                 for (int k = 0; k < other.shape.size(); ++k) {
                     for (int l = 0; l < other.shape[k].size(); ++l) {
                         if (other.shape[k][l] == 1) {
                             int otherX = other.x + l;
                             int otherY = other.y + k;
                             if (thisX == otherX && thisY == otherY) {
-                                return true; // Collision detected
+                                return true;
                             }
                         }
                     }
@@ -196,6 +202,7 @@ bool Tetromino::collidesWith(const Tetromino& other) const {
     }
     return false;
 }
+
 bool Tetromino::collidesWithAny(const std::vector<Tetromino>& landedTetrominoes) const {
     for (const auto& landed : landedTetrominoes) {
         if (collidesWith(landed)) {
@@ -203,4 +210,30 @@ bool Tetromino::collidesWithAny(const std::vector<Tetromino>& landedTetrominoes)
         }
     }
     return false; // No collisions
+}
+
+void Tetromino::deleteRow(int row) {
+    for (int i = 0; i < shape.size(); ++i) {
+        if (y + i == row) {
+            shape.erase(shape.begin() + i);
+            y++;
+            i--;
+        }
+    }
+
+    // Add empty rows at the top
+    while (shape.size() < 4) {
+        shape.insert(shape.begin(), std::vector<int>(shape[0].size(), 0));
+    }
+}
+
+bool Tetromino::isEmpty() const {
+    for (const auto& row : shape) {
+        for (int cell : row) {
+            if (cell == 1) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
