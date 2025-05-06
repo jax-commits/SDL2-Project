@@ -43,6 +43,13 @@
     <Image Include="38_particle_engines\green.bmp" />
     <Image Include="38_particle_engines\red.bmp" />
     <Image Include="38_particle_engines\shimmer.bmp" />
+    <Image Include="Resources\blueTetromino.png" />
+    <Image Include="Resources\greenTetromino.png" />
+    <Image Include="Resources\orangeTetromino.png" />
+    <Image Include="Resources\purpleTetromino.png" />
+    <Image Include="Resources\redTetromino.png" />
+    <Image Include="Resources\tealTetromino.png" />
+    <Image Include="Resources\yellowTetromino.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

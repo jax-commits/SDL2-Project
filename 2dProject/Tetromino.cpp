@@ -9,31 +9,31 @@ void Tetromino::setShape() {
     switch (type) {
     case TetrominoType::I:
         shape = { {1, 1, 1, 1} };
-        color = { 0, 255, 255, 255 }; // Cyan
+		blockTexture = &gTealBlockTexture;
         break;
     case TetrominoType::O:
         shape = { {1, 1}, {1, 1} };
-        color = { 255, 255, 0, 255 }; // Yellow
+		blockTexture = &gYellowBlockTexture;
         break;
     case TetrominoType::T:
         shape = { {0, 1, 0}, {1, 1, 1} };
-        color = { 128, 0, 128, 255 }; // Purple
+		blockTexture = &gPurpleBlockTexture;
         break;
     case TetrominoType::L:
         shape = { {1, 0, 0}, {1, 1, 1} };
-        color = { 255, 165, 0, 255 }; // Orange
+		blockTexture = &gOrangeBlockTexture;
         break;
     case TetrominoType::J:
         shape = { {0, 0, 1}, {1, 1, 1} };
-        color = { 0, 0, 255, 255 }; // Blue
+		blockTexture = &gBlueBlockTexture;
         break;
     case TetrominoType::S:
         shape = { {0, 1, 1}, {1, 1, 0} };
-        color = { 0, 255, 0, 255 }; // Green
+		blockTexture = &gGreenBlockTexture;
         break;
     case TetrominoType::Z:
         shape = { {1, 1, 0}, {0, 1, 1} };
-        color = { 255, 0, 0, 255 }; // Red
+		blockTexture = &gRedBlockTexture;
         break;
     }
 }
@@ -143,14 +143,13 @@ void Tetromino::render(SDL_Renderer* gRenderer) const {
     block.x = 0;
     block.y = 0;
     block.w = block.h = blockSize;
-    SDL_SetRenderDrawColor(gRenderer, color.r, color.g, color.b, color.a);
 
     for (int i = 0; i < shape.size(); ++i) {
         for (int j = 0; j < shape[i].size(); ++j) {
             if (shape[i][j] == 1) {
                 block.x = OFFSET_X + (x + j) * blockSize;
                 block.y = OFFSET_Y + (y + i) * blockSize;
-                SDL_RenderFillRect(gRenderer, &block);
+                blockTexture->render(block.x, block.y, nullptr);
             }
         }
     }
@@ -236,4 +235,10 @@ bool Tetromino::isEmpty() const {
         }
     }
     return true;
+}
+
+std::string Tetromino::getTexturePath() const {
+
+    return texturePath; // Return the texture path for the current tetromino
+
 }

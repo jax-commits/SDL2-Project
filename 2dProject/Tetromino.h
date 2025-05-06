@@ -16,6 +16,7 @@ public:
 
 	bool hasLanded;
 	int x, y;          // Position on the grid
+	LTexture* blockTexture;
 
 	void update(const std::vector<Tetromino>& landedTetrominoes);
 	void rotate();
@@ -25,6 +26,7 @@ public:
 
 	const std::vector<std::vector<int>>& getShape() const;
 	std::vector<std::vector<int>>& getShape();
+	std::string getTexturePath() const;
 
 	bool isLanded() const;
 	bool isEmpty() const;
@@ -32,7 +34,7 @@ public:
 private:
 	TetrominoType type;
 	std::vector<std::vector<int>> shape;
-	SDL_Color color;
+	std::string texturePath;
 
 	int fallSpeed;     // Fall speed (controlled in update)
 	Uint32 lastFallTime;

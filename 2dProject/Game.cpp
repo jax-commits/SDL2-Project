@@ -9,6 +9,7 @@ void Game::run()
     SDL_Event e;
     //Vector of Tetrominoes that have landed on the Bottom Border or other Tetrominoes
     std::vector<Tetromino> landedTetrominoes;
+    LTexture blockTexture;
 
     // Calculate the center position for spawning Tetrominoes
     const int startX = (SCREEN_WIDTH / BLOCK_SIZE) / 2 - 1; // Center horizontally

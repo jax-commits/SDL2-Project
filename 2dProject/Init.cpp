@@ -2,6 +2,13 @@
 
 LWindow gWindow;
 SDL_Renderer* gRenderer = nullptr;
+LTexture gRedBlockTexture;
+LTexture gBlueBlockTexture;
+LTexture gTealBlockTexture;
+LTexture gPurpleBlockTexture;
+LTexture gYellowBlockTexture;
+LTexture gOrangeBlockTexture;
+LTexture gGreenBlockTexture;
 
 bool init()
 {
@@ -55,11 +62,70 @@ bool loadMedia()
     //Loading success flag
     bool success = true;
 
+    if (!gBlueBlockTexture.loadFromFile("Resources/blueTetromino.png"))
+    {
+        printf("Failed to load dot texture!\n");
+        success = false;
+    }
+
+    if (!gRedBlockTexture.loadFromFile("Resources/redTetromino.png"))
+    {
+        printf("Failed to load red texture!\n");
+        success = false;
+    }
+
+    if (!gGreenBlockTexture.loadFromFile("Resources/greenTetromino.png"))
+    {
+        printf("Failed to load green texture!\n");
+        success = false;
+    }
+
+    if (!gYellowBlockTexture.loadFromFile("Resources/yellowTetromino.png"))
+    {
+        printf("Failed to load blue texture!\n");
+        success = false;
+    }
+
+    if (!gOrangeBlockTexture.loadFromFile("Resources/orangeTetromino.png"))
+    {
+        printf("Failed to load shimmer texture!\n");
+        success = false;
+    }
+
+    if (!gTealBlockTexture.loadFromFile("Resources/tealTetromino.png"))
+    {
+        printf("Failed to load shimmer texture!\n");
+        success = false;
+    }
+
+    if (!gPurpleBlockTexture.loadFromFile("Resources/purpleTetromino.png"))
+    {
+        printf("Failed to load shimmer texture!\n");
+        success = false;
+    }
+
+    //Set texture transparency
+    gRedBlockTexture.setAlpha(255);
+    gBlueBlockTexture.setAlpha(255);
+    gGreenBlockTexture.setAlpha(255);
+    gYellowBlockTexture.setAlpha(255);
+    gOrangeBlockTexture.setAlpha(255);
+    gPurpleBlockTexture.setAlpha(255);
+    gTealBlockTexture.setAlpha(255);
+
     return success;
 }
 
 void close()
 {
+    gRedBlockTexture.free();
+    gBlueBlockTexture.free();
+    gGreenBlockTexture.free();
+    gYellowBlockTexture.free();
+    gOrangeBlockTexture.free();
+    gPurpleBlockTexture.free();
+    gTealBlockTexture.free();
+
     // Destroy window and renderer
     SDL_DestroyRenderer(gRenderer);
     gWindow.free();

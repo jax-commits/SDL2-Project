@@ -54,6 +54,27 @@
     <Image Include="38_particle_engines\shimmer.bmp">
       <Filter>Resources\images</Filter>
     </Image>
+    <Image Include="Resources\blueTetromino.png">
+      <Filter>Resources\images</Filter>
+    </Image>
+    <Image Include="Resources\greenTetromino.png">
+      <Filter>Resources\images</Filter>
+    </Image>
+    <Image Include="Resources\orangeTetromino.png">
+      <Filter>Resources\images</Filter>
+    </Image>
+    <Image Include="Resources\purpleTetromino.png">
+      <Filter>Resources\images</Filter>
+    </Image>
+    <Image Include="Resources\redTetromino.png">
+      <Filter>Resources\images</Filter>
+    </Image>
+    <Image Include="Resources\tealTetromino.png">
+      <Filter>Resources\images</Filter>
+    </Image>
+    <Image Include="Resources\yellowTetromino.png">
+      <Filter>Resources\images</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
