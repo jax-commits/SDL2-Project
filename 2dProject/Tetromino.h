@@ -22,11 +22,9 @@ public:
 	void rotate();
 	void handleEvent(SDL_Event& e, const std::vector<Tetromino>& landedTetrominoes);
 	void render(SDL_Renderer* gRenderer) const; // Render Tetris pieces
-	void deleteRow(int row);
 
 	const std::vector<std::vector<int>>& getShape() const;
 	std::vector<std::vector<int>>& getShape();
-	std::string getTexturePath() const;
 
 	bool isLanded() const;
 	bool isEmpty() const;
@@ -40,7 +38,7 @@ private:
 	Uint32 lastFallTime;
 
 	void setShape();
-	void rotateBack();
+	void rotateOnce();
 
 	// Private Bool Functions for Collision Detection for 1: Screen Borders 2: Any other Objects
 	bool isOutOfBounds();

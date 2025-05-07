@@ -9,6 +9,7 @@ LTexture gPurpleBlockTexture;
 LTexture gYellowBlockTexture;
 LTexture gOrangeBlockTexture;
 LTexture gGreenBlockTexture;
+LTexture gBackgroundTexture;
 
 bool init()
 {
@@ -64,43 +65,49 @@ bool loadMedia()
 
     if (!gBlueBlockTexture.loadFromFile("Resources/blueTetromino.png"))
     {
-        printf("Failed to load dot texture!\n");
+        printf("Failed to load blue block texture!\n");
         success = false;
     }
 
     if (!gRedBlockTexture.loadFromFile("Resources/redTetromino.png"))
     {
-        printf("Failed to load red texture!\n");
+        printf("Failed to load red block texture!\n");
         success = false;
     }
 
     if (!gGreenBlockTexture.loadFromFile("Resources/greenTetromino.png"))
     {
-        printf("Failed to load green texture!\n");
+        printf("Failed to load green block texture!\n");
         success = false;
     }
 
     if (!gYellowBlockTexture.loadFromFile("Resources/yellowTetromino.png"))
     {
-        printf("Failed to load blue texture!\n");
+        printf("Failed to load yellow block texture!\n");
         success = false;
     }
 
     if (!gOrangeBlockTexture.loadFromFile("Resources/orangeTetromino.png"))
     {
-        printf("Failed to load shimmer texture!\n");
+        printf("Failed to load orange block texture!\n");
         success = false;
     }
 
     if (!gTealBlockTexture.loadFromFile("Resources/tealTetromino.png"))
     {
-        printf("Failed to load shimmer texture!\n");
+        printf("Failed to load teal block texture!\n");
         success = false;
     }
 
     if (!gPurpleBlockTexture.loadFromFile("Resources/purpleTetromino.png"))
     {
-        printf("Failed to load shimmer texture!\n");
+        printf("Failed to load purple block texture!\n");
+        success = false;
+    }
+
+    if (!gBackgroundTexture.loadFromFile("Resources/TetrisBackground.png"))
+    {
+        printf("Failed to load background texture!\n");
         success = false;
     }
 
@@ -112,6 +119,7 @@ bool loadMedia()
     gOrangeBlockTexture.setAlpha(255);
     gPurpleBlockTexture.setAlpha(255);
     gTealBlockTexture.setAlpha(255);
+	gBackgroundTexture.setAlpha(255);
 
     return success;
 }
@@ -125,6 +133,7 @@ void close()
     gOrangeBlockTexture.free();
     gPurpleBlockTexture.free();
     gTealBlockTexture.free();
+	gBackgroundTexture.free();
 
     // Destroy window and renderer
     SDL_DestroyRenderer(gRenderer);

@@ -67,7 +67,17 @@ void Tetromino::update(const std::vector<Tetromino>& landedTetrominoes) {
     }
 }
 
+
 void Tetromino::rotate() {
+    rotateOnce();
+
+    if (isOutOfBounds()) {
+        rotateOnce();
+        rotateOnce();
+        rotateOnce();
+    }
+}
+void Tetromino::rotateOnce() {
     int rows = shape.size();
     int cols = shape[0].size();
     std::vector<std::vector<int>> rotated(cols, std::vector<int>(rows));
@@ -79,17 +89,6 @@ void Tetromino::rotate() {
     }
 
     shape = rotated;
-
-    if (isOutOfBounds()) {
-        rotateBack(); // Revert rotation if out of bounds
-    }
-}
-
-void Tetromino::rotateBack() {
-    // Rotate three more times to revert the original rotation
-    for (int i = 0; i < 3; i++) {
-        rotate();
-    }
 }
 
 void Tetromino::handleEvent(SDL_Event& e, const std::vector<Tetromino>& landedTetrominoes)
@@ -127,9 +126,12 @@ void Tetromino::handleEvent(SDL_Event& e, const std::vector<Tetromino>& landedTe
             break;
         case SDLK_w:
             rotate(); // Rotate piece
-            if (isOutOfBounds() || collidesWithAny(landedTetrominoes)) {
-                rotateBack();
-            }
+
+			if (collidesWithAny(landedTetrominoes)) {
+				rotateOnce();
+				rotateOnce();
+				rotateOnce();
+			}
             break;
         }
     }
@@ -211,21 +213,6 @@ bool Tetromino::collidesWithAny(const std::vector<Tetromino>& landedTetrominoes)
     return false; // No collisions
 }
 
-void Tetromino::deleteRow(int row) {
-    for (int i = 0; i < shape.size(); ++i) {
-        if (y + i == row) {
-            shape.erase(shape.begin() + i);
-            y++;
-            i--;
-        }
-    }
-
-    // Add empty rows at the top
-    while (shape.size() < 4) {
-        shape.insert(shape.begin(), std::vector<int>(shape[0].size(), 0));
-    }
-}
-
 bool Tetromino::isEmpty() const {
     for (const auto& row : shape) {
         for (int cell : row) {
@@ -235,10 +222,4 @@ bool Tetromino::isEmpty() const {
         }
     }
     return true;
-}
-
-std::string Tetromino::getTexturePath() const {
-
-    return texturePath; // Return the texture path for the current tetromino
-
 }

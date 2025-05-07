@@ -2,10 +2,13 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+#include "LTexture.h"
+
 // Extern declarations of global variables
 class LWindow;
 extern LWindow gWindow;
 extern SDL_Renderer* gRenderer;
+extern LTexture gBackgroundTexture;
 
 const int BLOCK_SIZE = 30;
 const int SCREEN_WIDTH = 300;

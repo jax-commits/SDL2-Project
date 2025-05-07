@@ -51,6 +51,8 @@ void Game::run()
         SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(gRenderer);
 
+		gBackgroundTexture.render(0, 0, nullptr);
+
         // Render landed Tetrominoes
         for (const auto& tetromino : landedTetrominoes) {
             tetromino.render(gRenderer);
