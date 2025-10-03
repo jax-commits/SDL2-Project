@@ -1,1 +1,11 @@
-﻿
+﻿  Game.cpp
+C:\Users\jaxlo\source\repos\My2dProject\2dProject\Game.cpp(104,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Init.cpp
+  LTexture.cpp
+  LWindow.cpp
+  main.cpp
+  Tetromino.cpp
+C:\Users\jaxlo\source\repos\My2dProject\2dProject\Tetromino.cpp(81,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\jaxlo\source\repos\My2dProject\2dProject\Tetromino.cpp(82,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
+  2dProject.vcxproj -> C:\Users\jaxlo\source\repos\My2dProject\x64\Debug\2dProject.exe
